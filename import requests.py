@@ -10,6 +10,8 @@ import logging
 import pandas as pd
 import concurrent.futures
 import time
+from pathlib import Path
+
 
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
@@ -41,7 +43,10 @@ def configure_driver():
         "profile.managed_default_content_settings.javascript": 2
     }
     chrome_options.add_experimental_option("prefs", prefs)
-    service = Service(r'D:\\Chrome Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe')
+
+    script_dir = Path(__file__).resolve().parent
+    chromedriver_path = script_dir / 'chromedriver.exe'
+    service = Service(str(chromedriver_path))
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 
